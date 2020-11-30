@@ -10,8 +10,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class CreateNewRepositoryPage extends AbstractPage
-{
+public class CreateNewRepositoryPage extends AbstractPage {
 	private final String BASE_URL = "http://www.github.com/new";
 	private final Logger logger = LogManager.getRootLogger();
 
@@ -29,14 +28,12 @@ public class CreateNewRepositoryPage extends AbstractPage
 	@FindBy(xpath = "//a[@data-pjax='#js-repo-pjax-container']")
 	private WebElement linkCurrentRepository;
 
-	public CreateNewRepositoryPage(WebDriver driver)
-	{
+	public CreateNewRepositoryPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(this.driver, this);
 	}
 
-	public boolean isCurrentRepositoryEmpty()
-	{
+	public boolean isCurrentRepositoryEmpty() {
 		WebElement labelEmptyRepoSetupOption = new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
 				.until(ExpectedConditions.presenceOfElementLocated(labelEmptyRepoSetupOptionLocator));
 		return labelEmptyRepoSetupOption.isDisplayed();
@@ -46,20 +43,20 @@ public class CreateNewRepositoryPage extends AbstractPage
 	{
 		inputRepositoryName.sendKeys(repositoryName);
 		inputRepositoryDescription.sendKeys(repositoryDescription);
+		new WebDriverWait(driver, WAIT_TIMEOUT_SECONDS)
+				.until(ExpectedConditions.elementToBeClickable(buttonCreate));
 		buttonCreate.click();
 		logger.info("Created repository with name: [" + repositoryName +
 				"[ and description: [" + repositoryDescription + "]");
 		return this;
 	}
 
-	public String getCurrentRepositoryName()
-	{
+	public String getCurrentRepositoryName() {
 		return linkCurrentRepository.getText();
 	}
 
 	@Override
-	public CreateNewRepositoryPage openPage()
-	{
+	public CreateNewRepositoryPage openPage() {
 		driver.navigate().to(BASE_URL);
 		return this;
 	}
